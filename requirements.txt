@@ -4,5 +4,7 @@ langchain-groq
 langchain-google-genai
 langchain-huggingface
 langgraph
+langchain-tavily
+
 
 -e .
