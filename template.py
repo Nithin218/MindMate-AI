@@ -17,7 +17,6 @@ list_of_files = [
     f"src/{ProjectName}/Workflow/__init__.py",
     f"src/{ProjectName}/Workflow/workflow.py",
     "config/config.yaml",
-    "params.yaml",
     "app.py",
     "requirements.txt",
     "setup.py",
