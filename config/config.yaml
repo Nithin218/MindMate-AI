@@ -5,9 +5,6 @@ llm:
   google:
     provider: "google"
     model_name: "gemini-1.5-flash"
-  huggingface:
-    provider: "huggingface"
-    model_name: "mistralai/Mistral-7B-Instruct-v0.2"
 embeddings:
   huggingface:
     provider: "huggingface"
