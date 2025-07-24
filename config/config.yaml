@@ -5,6 +5,9 @@ llm:
   google:
     provider: "google"
     model_name: "gemini-1.5-flash"
+  huggingface:
+    provider: "huggingface"
+    model_name: "meta-llama/Meta-Llama-3-8B-Instruct"
 embeddings:
   huggingface:
     provider: "huggingface"

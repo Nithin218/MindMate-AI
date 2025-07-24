@@ -5,6 +5,6 @@ langchain-google-genai
 langchain-huggingface
 langgraph
 langchain-tavily
-
+python-dotenv
 
 -e .
