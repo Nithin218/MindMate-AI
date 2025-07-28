@@ -64,10 +64,3 @@ def emotion_analysis_tool(text: str) -> Dict[str, Any]:
         'total_emotion_indicators': total_emotion_words,
         'analysis_summary': f"Text shows primarily {dominant_emotion} emotion with {sentiment} sentiment"
     }
-
-# Example usage:
-if __name__ == "__main__":
-    sample_text = "I'm so excited about this new project! It makes me really happy."
-    result = emotion_analysis_tool.invoke({"text": sample_text})
-    print("Emotion Analysis Result:")
-    print(result)

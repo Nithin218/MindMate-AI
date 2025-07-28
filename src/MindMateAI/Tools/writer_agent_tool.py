@@ -510,39 +510,3 @@ def writer_agent_tool(
             "action": action,
             "timestamp": datetime.now().isoformat()
         }
-
-# Example usage and testing
-if __name__ == "__main__":
-    # Test content creation
-    result = writer_agent_tool.invoke({
-        "action": "create",
-        "content_type": "blog_post",
-        "writing_style": "casual",
-        "topic": "Artificial Intelligence in Healthcare",
-        "requirements": {
-            "length": 800,
-            "audience": "general public",
-            "keywords": ["AI", "healthcare", "technology", "medicine"]
-        }
-    })
-    print("Content Creation Result:")
-    print(json.dumps(result, indent=2))
-
-    # Test content improvement
-    sample_content = "AI is good for healthcare. It helps doctors. Patients benefit too. Many hospitals use AI now."
-
-    improvement_result = writer_agent_tool.invoke({
-        "action": "improve",
-        "content": sample_content,
-        "improvement_type": "clarity"
-    })
-    print("\nContent Improvement Result:")
-    print(json.dumps(improvement_result, indent=2))
-
-    # Test content analysis
-    analysis_result = writer_agent_tool.invoke({
-        "action": "analyze",
-        "content": sample_content
-    })
-    print("\nContent Analysis Result:")
-    print(json.dumps(analysis_result, indent=2))

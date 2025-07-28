@@ -598,22 +598,3 @@ def cbt_guide_tool(
         response["action_plan"] = agent.create_action_plan(guidance)
     
     return response
-
-# Example usage and testing
-if __name__ == "__main__":
-    # Test cases
-    test_cases = [
-        "I'm feeling really overwhelmed with work and can't stop worrying about everything",
-        "I keep thinking I'm a failure and nothing I do is good enough",
-        "I'm so anxious about my presentation tomorrow, I can't sleep",
-        "I've been feeling depressed and just want to stay in bed all day"
-    ]
-    
-    for test_input in test_cases:
-        print(f"\nInput: {test_input}")
-        result = cbt_guide_tool.invoke({"user_concern": test_input})
-        print(f"Detected emotions: {result['emotional_analysis']['detected_emotions']}")
-        print(f"Stress level: {result['emotional_analysis']['stress_level']}")
-        print(f"Guidance: {result['personalized_guidance']}")
-        print(f"Top technique: {result['recommended_techniques'][0]['name']}")
-        print("-" * 50)
