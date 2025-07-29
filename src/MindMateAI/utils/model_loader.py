@@ -15,13 +15,14 @@ load_dotenv()
 class ConfigLoader:
     def __init__(self):
         print(f"Loaded config.....")
-        self.config = read_yaml(Path("config.yaml"))
-    
+        self.config = read_yaml(Path("../MindMate-AI/config/config.yaml"))
+        if not self.config:
+            raise ValueError("Configuration file is empty or not found.")
     def __getitem__(self, key):
         return self.config[key]
 
 class ModelLoader(BaseModel):
-    model_provider: Literal["groq", "huggingface", "google"] = "huggingface"
+    model_provider: Literal["groq", "huggingface", "google"] = "groq"
     config: Optional[ConfigLoader] = Field(default=None, exclude=True)
 
     def model_post_init(self, __context: Any) -> None:

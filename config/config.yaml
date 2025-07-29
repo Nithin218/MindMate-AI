@@ -8,6 +8,7 @@ llm:
   huggingface:
     provider: "huggingface"
     model_name: "meta-llama/Meta-Llama-3-8B-Instruct"
+    # model_name: "cointegrated/rubert-tiny2-cedr-emotion-detection"
 embeddings:
   huggingface:
     provider: "huggingface"
