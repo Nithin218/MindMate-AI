@@ -1,66 +1,65 @@
 # This tool analyzes text for emotional content and sentiment
 
 from langchain_core.tools import tool
-from typing import Dict, Any
-import re
+import json
 
-@tool
-def emotion_analysis_tool(text: str) -> Dict[str, Any]:
-    """
-    Analyzes the emotional content of text input.
+
+class EmotionAnalysisTool:
+    """Emotion Analysis Tool for classifying user emotions from text input."""
     
-    Args:
-        text (str): The text to analyze for emotions
-        
-    Returns:
-        Dict containing emotion analysis results
-    """
+    def __init__(self):
+        self.emotion_analysis_tool = self._setup_tool()
+
+    def _setup_tool(self):
+        """Sets up the emotion analysis tool."""
+        @tool
+        def emotion_analysis_tool(query: str) -> str:
+            """
+            Analyzes the emotional content of the query and classifies the primary emotion.
+            
+            Args:
+                query (str): The query to analyze
+                
+            Returns:
+                str: JSON string containing emotion classification and confidence
+            """
+            
+            # Emotion keywords mapping
+            emotion_keywords = {
+                'anxiety': ['anxious', 'worried', 'nervous', 'panic', 'fear', 'concerned', 'stress'],
+                'depression': ['sad', 'depressed', 'hopeless', 'empty', 'worthless', 'down'],
+                'anger': ['angry', 'mad', 'furious', 'irritated', 'frustrated', 'rage'],
+                'grief': ['loss', 'death', 'mourning', 'grief', 'bereaved', 'departed'],
+                'stress': ['overwhelmed', 'pressure', 'burden', 'exhausted', 'burned out'],
+                'loneliness': ['lonely', 'isolated', 'alone', 'disconnected', 'abandoned'],
+                'neutral': ['okay', 'fine', 'normal', 'average', 'regular']
+            }
+            
+            query_lower = query.lower()
+            emotion_scores = {}
+            
+            # Calculate emotion scores based on keyword presence
+            for emotion, keywords in emotion_keywords.items():
+                score = sum(1 for keyword in keywords if keyword in query_lower)
+                if score > 0:
+                    emotion_scores[emotion] = score
+            
+            # Determine primary emotion
+            if emotion_scores:
+                primary_emotion = max(emotion_scores.keys(), key=lambda k: emotion_scores[k])
+                confidence = min(emotion_scores[primary_emotion] / 3.0, 1.0)  # Normalize to 0-1
+            else:
+                primary_emotion = 'neutral'
+                confidence = 0.5
+            
+            result = {
+                'emotion': primary_emotion,
+                'confidence': confidence,
+                'query': query
+            }
+            
+            return json.dumps(result)
+
+        return emotion_analysis_tool
+
     
-    # Define emotion keywords (in a real implementation, you'd use NLP libraries)
-    emotion_keywords = {
-        'joy': ['happy', 'excited', 'joyful', 'delighted', 'cheerful', 'elated'],
-        'sadness': ['sad', 'depressed', 'down', 'melancholy', 'grief', 'sorrow'],
-        'anger': ['angry', 'furious', 'mad', 'irritated', 'rage', 'annoyed'],
-        'fear': ['afraid', 'scared', 'anxious', 'worried', 'nervous', 'terrified'],
-        'surprise': ['surprised', 'amazed', 'shocked', 'astonished', 'stunned'],
-        'disgust': ['disgusted', 'revolted', 'sick', 'nauseated', 'repulsed']
-    }
-    
-    # Convert text to lowercase for analysis
-    text_lower = text.lower()
-    
-    # Count emotion indicators
-    emotion_scores = {}
-    total_emotion_words = 0
-    
-    for emotion, keywords in emotion_keywords.items():
-        count = sum(1 for keyword in keywords if keyword in text_lower)
-        emotion_scores[emotion] = count
-        total_emotion_words += count
-    
-    # Determine dominant emotion
-    dominant_emotion = max(emotion_scores, key=emotion_scores.get) if total_emotion_words > 0 else 'neutral'
-    
-    # Calculate confidence (simple approach)
-    confidence = emotion_scores[dominant_emotion] / max(len(text.split()) * 0.1, 1)
-    confidence = min(confidence, 1.0)  # Cap at 100%
-    
-    # Determine overall sentiment
-    positive_emotions = emotion_scores['joy'] + emotion_scores['surprise']
-    negative_emotions = sum(emotion_scores[e] for e in ['sadness', 'anger', 'fear', 'disgust'])
-    
-    if positive_emotions > negative_emotions:
-        sentiment = 'positive'
-    elif negative_emotions > positive_emotions:
-        sentiment = 'negative'
-    else:
-        sentiment = 'neutral'
-    
-    return {
-        'dominant_emotion': dominant_emotion,
-        'confidence': round(confidence, 2),
-        'sentiment': sentiment,
-        'emotion_breakdown': emotion_scores,
-        'total_emotion_indicators': total_emotion_words,
-        'analysis_summary': f"Text shows primarily {dominant_emotion} emotion with {sentiment} sentiment"
-    }
