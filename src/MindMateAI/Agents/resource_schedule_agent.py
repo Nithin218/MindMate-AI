@@ -40,7 +40,7 @@ def create_resource_schedule_agent(state: MentalHealthState):
     logger.info("Resource Schedule Agent...")
 
 
-    def state_modifier(state):
+    def dynamic_prompt(state):
         return [
             SystemMessage(content=RESOURCE_SCHEDULE_PROMPT),
             HumanMessage(content=f"Therapeutic Response: {state['cbt_response']}\nEmotion: {state['emotion']}")
@@ -49,5 +49,6 @@ def create_resource_schedule_agent(state: MentalHealthState):
     return create_react_agent(
         llm,
         tools=tools,
-        state_modifier=state_modifier
+        prompt=dynamic_prompt,
+        state_schema=MentalHealthState
     )

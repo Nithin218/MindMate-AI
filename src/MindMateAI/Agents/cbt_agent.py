@@ -33,7 +33,7 @@ def create_cbt_agent():
     logger.info("CBT Guide Agent...")
 
 
-    def state_modifier(state):
+    def dynamic_prompt(state):
         return [
             SystemMessage(content=CBT_AGENT_PROMPT),
             HumanMessage(content=f"Query: {state['rewritten_query']}\nEmotion: {state['emotion']}")
@@ -42,5 +42,6 @@ def create_cbt_agent():
     return create_react_agent(
         llm,
         tools=tools,
-        state_modifier=state_modifier
+        prompt=dynamic_prompt,
+        state_schema=MentalHealthState
     )

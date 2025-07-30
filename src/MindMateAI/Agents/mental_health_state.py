@@ -1,6 +1,7 @@
 from typing import TypedDict, List, Dict, Any
+from langgraph.graph import MessagesState
 
-class MentalHealthState(TypedDict):
+class MentalHealthState(MessagesState):
     user_query: str
     rewritten_query: str
     emotion: str

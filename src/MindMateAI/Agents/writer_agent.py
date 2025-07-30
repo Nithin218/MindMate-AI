@@ -29,7 +29,7 @@ def create_writer_agent(state: MentalHealthState):
     llm = model_loader.load_llm()
     logger.info("Writer Agent...")
 
-    def state_modifier(state):
+    def dynamic_prompt(state):
         return [
             SystemMessage(content=WRITER_AGENT_PROMPT),
             HumanMessage(content=f"CBT Response: {state['cbt_response']}\nSchedule: {state['schedule_recommendation']}\nEmotion: {state['emotion']}")
@@ -38,5 +38,6 @@ def create_writer_agent(state: MentalHealthState):
     return create_react_agent(
         llm,
         tools=[],
-        state_modifier=state_modifier
+        prompt=dynamic_prompt,
+        state_schema=MentalHealthState
     )
