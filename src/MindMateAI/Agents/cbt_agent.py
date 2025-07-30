@@ -4,8 +4,9 @@ from MindMateAI.logger import logger
 from langchain_core.messages import HumanMessage, SystemMessage
 from MindMateAI.tools.web_search_tool import tavily_tool
 from MindMateAI.tools.cbt_guide_tool import CBTGuideTool
+from MindMateAI.Agents.mental_health_state import MentalHealthState
 
-def create_cbt_agent():
+def create_cbt_agent(state: MentalHealthState):
     """
     CBT Agent: Specializes in Cognitive Behavioral Therapy (CBT) techniques
     """

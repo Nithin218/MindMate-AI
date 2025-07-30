@@ -8,6 +8,7 @@ from MindMateAI.Agents.writer_agent import create_writer_agent
 from MindMateAI.logger import logger
 from typing import TypedDict, Literal, List, Dict, Any
 from langgraph.graph import StateGraph, START, END
+import json
 
 class GraphBuilder:
     def __init__(self):
@@ -220,7 +221,8 @@ if __name__ == "__main__":
         "ethical_feedback": "",
         "final_output": "",
         "messages": [],
-        "retry_count": 0
+        "retry_count": 0,
+        "remaining_steps": 5
     }
     response = agentic_workflow_graph.invoke(initial_state)
 

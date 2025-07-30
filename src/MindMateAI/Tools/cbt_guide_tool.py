@@ -107,6 +107,6 @@ class CBTGuideTool:
             
             return response
 
-        return emotion_analysis_tool
+        return cbt_therapy_tool
 
     

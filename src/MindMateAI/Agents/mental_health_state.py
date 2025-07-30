@@ -12,3 +12,4 @@ class MentalHealthState(MessagesState):
     final_output: str
     messages: List[Dict[str, Any]]
     retry_count: int
+    remaining_steps: int
