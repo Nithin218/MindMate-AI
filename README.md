@@ -177,4 +177,3 @@ See [LICENSE](LICENSE) for details.
 ---
 
 *Thank you for using MindMateAI!*
-# MindMate-AI
