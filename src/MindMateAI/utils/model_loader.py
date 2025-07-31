@@ -42,17 +42,6 @@ class ModelLoader(BaseModel):
             groq_api_key = os.getenv("GROQ_API_KEY")
             model_name = self.config["llm"]["groq"]["model_name"]
             llm=ChatGroq(model=model_name, api_key=groq_api_key)
-        elif self.model_provider == "huggingface":
-            logger.info("Loading LLM from HuggingFace..............")
-            os.environ["HUGGINGFACEHUB_API_TOKEN"] = os.getenv("HF_TOKEN")
-            model_name = self.config["llm"]["huggingface"]["model_name"]
-            llm = HuggingFaceEndpoint(
-                repo_id=model_name,
-                task="text-generation",
-                temperature=0.5,
-                max_new_tokens=1000,
-            )
-            llm=ChatHuggingFace(llm=llm)
         elif self.model_provider == "google":
             logger.info("Loading LLM from Google..............")
             os.environ["GOOGLE_API_KEY"] = os.getenv("GOOGLE_API_KEY")

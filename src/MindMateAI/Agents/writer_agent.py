@@ -22,10 +22,11 @@ def create_writer_agent(state: MentalHealthState):
         - Ensure the final output feels personal and caring
 
         Create a comprehensive, well-formatted response that combines all elements into a cohesive, helpful message.
-        Return the final output as a string."""
+        Return the final output as a string.
+    """
 
     # Load the LLM model
-    model_loader = ModelLoader(model_provider="groq")
+    model_loader = ModelLoader(model_provider="google")
     llm = model_loader.load_llm()
     logger.info("Writer Agent...")
 

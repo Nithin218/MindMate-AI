@@ -1,3 +1,4 @@
+from langgraph.graph import StateGraph, START, END
 from MindMateAI.Agents.mental_health_state import MentalHealthState
 from MindMateAI.Agents.rewrite_agent import create_query_rewriting_agent
 from MindMateAI.Agents.emotion_analysis_agent import create_emotion_analysis_agent
@@ -7,7 +8,6 @@ from MindMateAI.Agents.cbt_agent import create_cbt_agent
 from MindMateAI.Agents.writer_agent import create_writer_agent
 from MindMateAI.logger import logger
 from typing import TypedDict, Literal, List, Dict, Any
-from langgraph.graph import StateGraph, START, END
 import json
 
 class GraphBuilder:
@@ -35,6 +35,8 @@ class GraphBuilder:
     def emotion_analysis_node(self, state: MentalHealthState) -> MentalHealthState:
         """Analyze emotion from the rewritten query"""
         agent = create_emotion_analysis_agent(state)
+
+        logger.info("Analyzing emotion from rewritten query...")
         
         # Pass the actual state to the agent
         result = agent.invoke(state)
@@ -68,6 +70,8 @@ class GraphBuilder:
     def cbt_agent_node(self, state: MentalHealthState) -> MentalHealthState:
         """Generate CBT therapeutic response"""
         agent = create_cbt_agent(state)
+
+        logger.info("Generating CBT therapeutic response...")
         
         # Pass the actual state to the agent
         result = agent.invoke(state)
@@ -84,6 +88,8 @@ class GraphBuilder:
         """Generate schedule and resource recommendations"""
         agent = create_resource_schedule_agent(state)
         
+        logger.info("Generating resource schedule and recommendations...")
+
         # Pass the actual state to the agent
         result = agent.invoke(state)
         
@@ -98,6 +104,8 @@ class GraphBuilder:
     def ethical_guardian_node(self, state: MentalHealthState) -> MentalHealthState:
         """Check ethical compliance of the response"""
         agent = create_ethical_guardian_agent(state)
+
+        logger.info("Performing ethical compliance check...")
         
         # Pass the actual state to the agent
         result = agent.invoke(state)
@@ -125,6 +133,8 @@ class GraphBuilder:
     def writer_agent_node(self, state: MentalHealthState) -> MentalHealthState:
         """Create the final formatted output"""
         agent = create_writer_agent(state)
+
+        logger.info("Generating final formatted output...")
         
         # Pass the actual state to the agent
         result = agent.invoke(state)
@@ -205,26 +215,3 @@ class GraphBuilder:
     def __call__(self):
         """Build and return the mental health assistant workflow graph"""
         return self.build_graph()
-
-if __name__ == "__main__":
-    agentic_workflow = GraphBuilder()
-    agentic_workflow_graph = agentic_workflow()
-    user_input = "I've been feeling really anxious about my upcoming job interview and can't sleep"
-
-    initial_state = {
-        "user_query": user_input,
-        "rewritten_query": "",
-        "emotion": "",
-        "cbt_response": "",
-        "schedule_recommendation": "",
-        "ethical_check": True,
-        "ethical_feedback": "",
-        "final_output": "",
-        "messages": [],
-        "retry_count": 0,
-        "remaining_steps": 5
-    }
-    response = agentic_workflow_graph.invoke(initial_state)
-
-    print("Final Output:", response["final_output"])
-    print("Messages:", response["messages"])

@@ -5,12 +5,3 @@ llm:
   google:
     provider: "google"
     model_name: "gemini-1.5-flash"
-  huggingface:
-    provider: "huggingface"
-    model_name: "meta-llama/Meta-Llama-3-8B-Instruct"
-    # model_name: "cointegrated/rubert-tiny2-cedr-emotion-detection"
-embeddings:
-  huggingface:
-    provider: "huggingface"
-    model_name: "all-MiniLM-L6-v2"
-    

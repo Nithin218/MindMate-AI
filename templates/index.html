@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindMateAI - Your Mental Health Companion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+        }
+        body {
+            min-height: 100vh;
+            min-width: 100vw;
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+        .container {
+            max-width: 500px;
+            width: 98vw;
+            background: #fff;
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(60, 60, 120, 0.15);
+            padding: 36px 32px 24px 32px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #5e60ce;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            color: #6c757d;
+            font-size: 1.1rem;
+            margin-bottom: 24px;
+        }
+        .chat-box {
+            min-height: 220px;
+            max-height: 350px;
+            background: #f7f7fa;
+            border-radius: 16px;
+            padding: 18px 16px;
+            margin-bottom: 18px;
+            overflow-y: auto;
+            box-shadow: 0 2px 8px rgba(94, 96, 206, 0.05);
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .message {
+            margin: 12px 0;
+            text-align: left;
+        }
+        .message.user {
+            color: #22223b;
+            font-weight: 600;
+        }
+        .message.bot {
+            color: #5e60ce;
+            background: #e0e7ff;
+            border-radius: 10px;
+            padding: 8px 12px;
+            display: inline-block;
+        }
+        form {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 14px;
+            border-radius: 8px;
+            border: 1px solid #bdbdbd;
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.2s;
+        }
+        input[type="text"]:focus {
+            border: 1.5px solid #5e60ce;
+        }
+        button {
+            background: linear-gradient(90deg, #5e60ce 0%, #48b1f3 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: linear-gradient(90deg, #48b1f3 0%, #5e60ce 100%);
+        }
+        .footer {
+            margin-top: 32px;
+            color: #bdbdbd;
+            font-size: 0.95rem;
+        }
+        .theme-toggle {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            background: #e0e7ff;
+            color: #5e60ce;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(94, 96, 206, 0.08);
+            transition: background 0.2s, color 0.2s;
+        }
+        .theme-toggle.dark {
+            background: #232946;
+            color: #fff;
+        }
+        body.dark {
+            background: linear-gradient(135deg, #232946 0%, #121629 100%);
+        }
+        body.dark .container {
+            background: #232946;
+            color: #fff;
+            box-shadow: 0 8px 32px rgba(30, 30, 60, 0.25);
+        }
+        body.dark .chat-box {
+            background: #181c2f;
+            box-shadow: 0 2px 8px rgba(30, 30, 60, 0.10);
+        }
+        body.dark .message.bot {
+            background: #232946;
+            color: #e0e7ff;
+        }
+        body.dark .message.user {
+            color: #eebbc3;
+        }
+        body.dark input[type="text"] {
+            background: #232946;
+            color: #fff;
+            border: 1px solid #393e5c;
+        }
+        body.dark input[type="text"]:focus {
+            border: 1.5px solid #eebbc3;
+        }
+        body.dark button {
+            background: linear-gradient(90deg, #eebbc3 0%, #232946 100%);
+            color: #232946;
+        }
+        body.dark button:hover {
+            background: linear-gradient(90deg, #232946 0%, #eebbc3 100%);
+            color: #fff;
+        }
+        body.dark .footer {
+            color: #bdbdbd;
+        }
+        @media (max-width: 600px) {
+            .container {
+                max-width: 98vw;
+                padding: 18px 4vw 12px 4vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="theme-toggle" title="Toggle dark/light mode">🌙</button>
+    <div class="container">
+        <div class="logo">🌍 MindMateAI</div>
+        <div class="subtitle">Your AI-powered mental health companion. Ask anything, anytime.</div>
+        <div class="chat-box" id="chat-box">
+            <!-- Chat messages will appear here -->
+        </div>
+        <form id="chat-form" autocomplete="off">
+            <input type="text" id="user-input" placeholder="Type your feelings or questions..." required />
+            <button type="submit">Send</button>
+        </form>
+        <div class="footer">
+            &copy; 2025 Likith & Nithin | MindMateAI. All rights reserved.
+        </div>
+    </div>
+    <script>
+        // Theme toggle logic
+        const themeToggle = document.getElementById('theme-toggle');
+        function setTheme(dark) {
+            if (dark) {
+                document.body.classList.add('dark');
+                themeToggle.classList.add('dark');
+                themeToggle.innerHTML = '☀️';
+            } else {
+                document.body.classList.remove('dark');
+                themeToggle.classList.remove('dark');
+                themeToggle.innerHTML = '🌙';
+            }
+        }
+        // Load theme from localStorage
+        let darkMode = localStorage.getItem('mindmateai-theme') === 'dark';
+        setTheme(darkMode);
+        themeToggle.onclick = () => {
+            darkMode = !darkMode;
+            setTheme(darkMode);
+            localStorage.setItem('mindmateai-theme', darkMode ? 'dark' : 'light');
+        };
+
+        const chatBox = document.getElementById('chat-box');
+        const chatForm = document.getElementById('chat-form');
+        const userInput = document.getElementById('user-input');
+
+        function appendMessage(content, sender) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'message ' + sender;
+            msgDiv.innerHTML = content;
+            chatBox.appendChild(msgDiv);
+            // Always scroll to bottom after adding a message
+            setTimeout(() => {
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 50);
+        }
+
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const question = userInput.value.trim();
+            if (!question) return;
+            appendMessage(question, 'user');
+            userInput.value = '';
+            appendMessage('Thinking... <span style="font-size:1.2em;">🤔</span>', 'bot');
+            try {
+                const response = await fetch('/query', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ question })
+                });
+                const data = await response.json();
+                // Remove the 'Thinking...' message
+                chatBox.removeChild(chatBox.lastChild);
+                if (response.ok && data.answer) {
+                    appendMessage(data.answer, 'bot');
+                } else {
+                    appendMessage('Sorry, I could not process your request. Please try again.', 'bot');
+                }
+            } catch (err) {
+                chatBox.removeChild(chatBox.lastChild);
+                appendMessage('An error occurred. Please try again later.', 'bot');
+            }
+        });
+    </script>
+</body>
+</html>

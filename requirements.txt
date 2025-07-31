@@ -6,5 +6,11 @@ langchain-huggingface
 langgraph
 langchain-tavily
 python-dotenv
+fastapi
+uvicorn
+ensure
+pyyaml
+streamlit
+
 
 -e .

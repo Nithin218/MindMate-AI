@@ -9,9 +9,7 @@ ProjectName = "MindMateAI"
 list_of_files = [
     f"src/{ProjectName}/__init__.py",
     f"src/{ProjectName}/Agents/__init__.py",
-    f"src/{ProjectName}/Agents/agent.py",
     f"src/{ProjectName}/Tools/__init__.py",
-    f"src/{ProjectName}/Tools/tool.py",
     f"src/{ProjectName}/utils/__init__.py",
     f"src/{ProjectName}/utils/common.py",
     f"src/{ProjectName}/Workflow/__init__.py",
