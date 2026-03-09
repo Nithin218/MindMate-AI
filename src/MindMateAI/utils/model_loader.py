@@ -8,14 +8,15 @@ from dotenv import load_dotenv
 from pathlib import Path
 from langchain_groq import ChatGroq
 from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
-from langchain_google_genai import ChatGoogleGenerativeAI
+
 
 load_dotenv()
 
 class ConfigLoader:
     def __init__(self):
         print(f"Loaded config.....")
-        self.config = read_yaml(Path("../MindMate-AI/config/config.yaml"))
+        config_path = Path(__file__).resolve().parents[3] / "config" / "config.yaml"
+        self.config = read_yaml(config_path)
         if not self.config:
             raise ValueError("Configuration file is empty or not found.")
     def __getitem__(self, key):
