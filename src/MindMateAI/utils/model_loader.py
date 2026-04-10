@@ -4,49 +4,46 @@ from typing import Literal, Optional, Any
 from pydantic import BaseModel, Field
 from MindMateAI.utils.common import read_yaml
 from MindMateAI.logger import logger
-from dotenv import load_dotenv
 from pathlib import Path
 from langchain_groq import ChatGroq
-from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
-
 
 load_dotenv()
 
+
 class ConfigLoader:
     def __init__(self):
-        print(f"Loaded config.....")
+        print("Loaded config.....")
         config_path = Path(__file__).resolve().parents[3] / "config" / "config.yaml"
         self.config = read_yaml(config_path)
         if not self.config:
             raise ValueError("Configuration file is empty or not found.")
+
     def __getitem__(self, key):
         return self.config[key]
 
+
 class ModelLoader(BaseModel):
-    model_provider: Literal["groq", "huggingface", "google"] = "groq"
+    model_provider: Literal["groq", "groq_light"] = "groq"
     config: Optional[ConfigLoader] = Field(default=None, exclude=True)
 
     def model_post_init(self, __context: Any) -> None:
         self.config = ConfigLoader()
-    
+
     class Config:
         arbitrary_types_allowed = True
-    
+
     def load_llm(self):
         """
-        Load and return the LLM model.
+        groq       -> cbt_agent, writer_agent        (llama-3.3-70b-versatile)
+        groq_light -> emotion_analysis_agent,
+                      ethical_guardian_agent          (llama-3.1-8b-instant)
         """
-        logger.info("LLM loading...")
-        logger.info(f"Loading model from provider: {self.model_provider}")
-        if self.model_provider == "groq":
-            logger.info("Loading LLM from Groq..............")
-            groq_api_key = os.getenv("GROQ_API_KEY")
-            model_name = self.config["llm"]["groq"]["model_name"]
-            llm=ChatGroq(model=model_name, api_key=groq_api_key)
-        elif self.model_provider == "google":
-            logger.info("Loading LLM from Google..............")
-            os.environ["GOOGLE_API_KEY"] = os.getenv("GOOGLE_API_KEY")
-            model_name = self.config["llm"]["google"]["model_name"]
-            llm=ChatGoogleGenerativeAI(model=model_name)
-        
+        logger.info(f"Loading model: {self.model_provider}")
+        groq_api_key = os.getenv("GROQ_API_KEY")
+        if not groq_api_key:
+            raise ValueError("GROQ_API_KEY not found in environment variables.")
+
+        model_name = self.config["llm"][self.model_provider]["model_name"]
+        llm = ChatGroq(model=model_name, api_key=groq_api_key)
+        logger.info(f"Loaded {model_name} from Groq.")
         return llm

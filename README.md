@@ -164,10 +164,9 @@ MindMate-AI/
 ---
 
 ## Contributors
-- **Nithin**: Frontend/UI design, React implementation, tools development, and user experience.
-- **Likith**: Backend development, FastAPI integration, agent design, and workflow orchestration.
+- **Likith and team**: Full-stack development, agent design, workflow orchestration, frontend/UI design, and user experience.
 
-This project was completed collaboratively by Likith and Nithin. Likith focused on the robust backend architecture, LLM agents, and data workflow logic, while Nithin designed and built the responsive frontend UI, the modern React stack, and LangChain toolsets.
+This project was developed by Likith and team, focusing on the robust backend architecture, LLM agents, data workflow logic, and building the responsive frontend UI with modern React and LangChain toolsets.
 
 ---
 

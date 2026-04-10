@@ -41,40 +41,18 @@ class QueryRequest(BaseModel):
 
 def _build_initial_state(question: str) -> dict:
     """
-    Build a clean initial state for each invocation.
-
-    CRITICAL: ethical_check must start as None — not True or False.
-    - None  → guardian has not run yet  → supervisor will route to ethical_guardian
-    - True  → guardian passed           → supervisor will route to writer
-    - False → guardian failed           → supervisor will route to increment_retry
-
-    Setting it to True at startup (old bug) caused the ethical guardian
-    to be skipped entirely on every single request.
-
-    remaining_steps must be high enough for the full pipeline:
-      supervisor → rewrite → supervisor → emotion_analysis → supervisor
-      → cbt_agent → supervisor → ethical_guardian → supervisor → writer → END
-      That's at least 10 supervisor visits + 5 agent nodes = 15 minimum.
-      Set to 20 to allow up to 3 retry cycles without hitting the ceiling.
+    Clean initial state aligned with the current MentalHealthState schema.
+    Pipeline: emotion -> cbt -> ethical -> writer -> END
     """
     return {
-        "user_query":            question,
-        "rewritten_query":       "",
-        "emotion":               "",
-        "emotion_intensity":     "moderate",
-        "secondary_emotion":     None,
-        "emotion_rationale":     "",
-        "cbt_response":          "",
-        "schedule_recommendation": "",
-        "ethical_check":         None,   # ← MUST be None, not True
-        "ethical_feedback":      "",
-        "ethical_concerns":      [],
-        "specificity_score":     0,
-        "emotion_technique_match": True,
-        "final_output":          "",
-        "messages":              [],
-        "retry_count":           0,
-        "remaining_steps":       20,     # ← enough for full pipeline + 3 retries
+        "user_query":      question,
+        "emotion":         "",
+        "cbt_response":    "",
+        "final_output":    "",
+        "ethical_check":   False,
+        "messages":        [],
+        "retry_count":     0,
+        "remaining_steps": 20,
     }
 
 
@@ -99,21 +77,16 @@ async def query_endpoint(query: QueryRequest):
             )
 
         logger.info(
-            f"Pipeline complete | emotion={output.get('emotion')} "
-            f"({output.get('emotion_intensity')}) | "
+            f"Pipeline complete | emotion={output.get('emotion')} | "
             f"ethical={'PASS' if output.get('ethical_check') else 'FAIL'} | "
-            f"specificity={output.get('specificity_score')}/10"
+            f"retries={output.get('retry_count', 0)}"
         )
 
         return {
             "answer": final_output,
-            # Optional: expose metadata in dev; strip in prod if desired
             "meta": {
-                "emotion":           output.get("emotion"),
-                "intensity":         output.get("emotion_intensity"),
-                "secondary_emotion": output.get("secondary_emotion"),
-                "specificity_score": output.get("specificity_score"),
-                "retries":           output.get("retry_count", 0),
+                "emotion": output.get("emotion"),
+                "retries": output.get("retry_count", 0),
             }
         }
 

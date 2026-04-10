@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { User, Bot } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 
 const MessageBubble = ({ message }) => {
     const isUser = message.role === 'user';
@@ -35,13 +36,13 @@ const MessageBubble = ({ message }) => {
                     flexShrink: 0,
                     background: isUser
                         ? 'var(--color-surface-2)'
-                        : 'linear-gradient(135deg, #7C6EE8 0%, #C084FC 100%)',
+                        : 'var(--color-accent)',
                     border: `1px solid ${isUser ? 'var(--color-border)' : 'transparent'}`,
                     marginTop: '2px',
                 }}>
                     {isUser
                         ? <User size={16} color="var(--color-text-muted)" />
-                        : <Bot  size={16} color="#fff" />
+                        : <Bot size={16} color="#fff" />
                     }
                 </div>
 
@@ -50,7 +51,8 @@ const MessageBubble = ({ message }) => {
                     padding: '12px 16px',
                     borderRadius: isUser ? '16px 4px 16px 16px' : '4px 16px 16px 16px',
                     background: isUser ? 'var(--color-user-bubble)' : 'var(--color-bot-bubble)',
-                    border: `1px solid ${isUser ? '#1F3A55' : 'var(--color-border)'}`,
+                    border: `1px solid ${isUser ? 'var(--color-user-bubble)' : 'var(--color-border)'}`,
+                    boxShadow: isUser ? 'none' : '0 2px 4px rgba(0,0,0,0.02)',
                     color: 'var(--color-text)',
                     fontFamily: 'var(--font-body)',
                     fontSize: '0.9375rem',
@@ -67,12 +69,18 @@ const MessageBubble = ({ message }) => {
                         fontWeight: 600,
                         letterSpacing: '0.06em',
                         textTransform: 'uppercase',
-                        color: isUser ? '#7BA7D4' : 'var(--color-accent-2)',
-                        marginBottom: '5px',
+                        color: isUser ? 'var(--color-surface)' : 'var(--color-accent)',
+                        marginBottom: '8px',
                     }}>
                         {isUser ? 'You' : 'MindMate'}
                     </div>
-                    {message.content}
+                    {isUser ? (
+                        message.content
+                    ) : (
+                        <div className="markdown-body">
+                            <ReactMarkdown>{message.content}</ReactMarkdown>
+                        </div>
+                    )}
                 </div>
             </div>
         </motion.div>

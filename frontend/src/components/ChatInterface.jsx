@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
-import { Send, Loader2 } from 'lucide-react';
+import { Send, Loader2, Brain } from 'lucide-react';
 import MessageBubble from './MessageBubble';
+import heroImage from '../assets/hero_image.png';
 
 const WELCOME_SUGGESTIONS = [
     "I've been feeling overwhelmed lately",
@@ -90,19 +91,18 @@ const ChatInterface = () => {
                         width: '38px',
                         height: '38px',
                         borderRadius: '50%',
-                        background: 'linear-gradient(135deg, #7C6EE8 0%, #C084FC 100%)',
-                        fontSize: '1.1rem',
+                        background: 'var(--color-accent)',
+                        color: 'var(--color-surface)',
                         flexShrink: 0,
-                    }}>🧠</span>
+                    }}>
+                        <Brain size={20} />
+                    </span>
 
                     <h1 style={{
                         fontFamily: 'var(--font-heading)',
                         fontSize: '1.75rem',
                         fontWeight: 700,
-                        background: 'linear-gradient(90deg, #A78BFA 0%, #C084FC 100%)',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        backgroundClip: 'text',
+                        color: 'var(--color-text)',
                         letterSpacing: '-0.02em',
                         margin: 0,
                     }}>
@@ -139,19 +139,32 @@ const ChatInterface = () => {
                         gap: '24px',
                         paddingBottom: '60px',
                     }}>
-                        <div style={{ textAlign: 'center' }}>
+                        <div style={{ textAlign: 'center', animation: 'fadeIn 0.8s ease-out' }}>
+                            <img 
+                                src={heroImage} 
+                                alt="MindMate AI Illustration" 
+                                style={{ 
+                                    width: '180px', 
+                                    height: '180px', 
+                                    objectFit: 'cover', 
+                                    borderRadius: '32px', 
+                                    margin: '0 auto 24px', 
+                                    boxShadow: 'var(--shadow-glass)',
+                                    border: '2px solid rgba(255,255,255,0.8)'
+                                }} 
+                            />
                             <p style={{
                                 fontFamily: 'var(--font-heading)',
-                                fontSize: '1.25rem',
-                                fontWeight: 600,
-                                color: 'var(--color-text)',
+                                fontSize: '1.5rem',
+                                fontWeight: 700,
+                                color: 'var(--color-accent)',
                                 marginBottom: '8px',
                             }}>
                                 How are you feeling today?
                             </p>
                             <p style={{
                                 fontFamily: 'var(--font-body)',
-                                fontSize: '0.875rem',
+                                fontSize: '1rem',
                                 color: 'var(--color-text-muted)',
                                 fontWeight: 400,
                             }}>
@@ -283,7 +296,7 @@ const ChatInterface = () => {
                             border: 'none',
                             background: (!input.trim() || isLoading)
                                 ? 'var(--color-surface-2)'
-                                : 'linear-gradient(135deg, #7C6EE8 0%, #C084FC 100%)',
+                                : 'var(--color-accent)',
                             color: (!input.trim() || isLoading) ? 'var(--color-text-muted)' : '#fff',
                             cursor: (!input.trim() || isLoading) ? 'not-allowed' : 'pointer',
                             transition: 'all 0.2s ease',
@@ -304,7 +317,7 @@ const ChatInterface = () => {
                     marginTop: '10px',
                     letterSpacing: '0.01em',
                 }}>
-                    MindMate AI · © 2025 Likith & Nithin · For support, not professional therapy
+                    MindMate AI · © 2026 Rushitha and team · For support, not professional therapy
                 </p>
             </div>
 
