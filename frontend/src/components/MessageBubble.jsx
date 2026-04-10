@@ -4,6 +4,9 @@ import ReactMarkdown from 'react-markdown';
 
 const MessageBubble = ({ message }) => {
   const isUser = message.role === 'user';
+  const bubbleClassName = isUser
+    ? 'mindmate-message-surface mindmate-message-user'
+    : 'mindmate-message-surface mindmate-message-assistant';
 
   return (
     <motion.div
@@ -49,18 +52,25 @@ const MessageBubble = ({ message }) => {
         </div>
 
         {/* Bubble */}
-        <div style={{
+        <div
+          className={bubbleClassName}
+          style={{
           padding: '11px 15px',
           borderRadius: isUser ? '16px 4px 16px 16px' : '4px 16px 16px 16px',
-          background: isUser ? '#EDE5D8' : 'rgba(255, 252, 245, 0.85)',
+          background: isUser
+            ? 'var(--color-user-bubble)'
+            : 'linear-gradient(180deg, rgba(255, 252, 245, 0.96), rgba(248, 240, 229, 0.92))',
           border: `0.5px solid rgba(139,111,78,${isUser ? '0.25' : '0.18'})`,
-          boxShadow: '0 2px 8px rgba(90,60,30,0.06)',
-          color: '#2C2218',
-          fontFamily: "'DM Sans', sans-serif",
-          fontSize: '0.9rem', fontWeight: 300,
+          boxShadow: isUser
+            ? '0 2px 8px rgba(90,60,30,0.06)'
+            : '0 10px 24px rgba(90,60,30,0.08)',
+          color: 'var(--color-text)',
+          fontFamily: 'var(--font-body)',
+          fontSize: '0.92rem', fontWeight: 300,
           lineHeight: 1.65, letterSpacing: '0.01em',
           wordBreak: 'break-word',
-        }}>
+        }}
+        >
           {/* Sender label */}
           <div style={{
             fontFamily: "'DM Sans', sans-serif",
@@ -74,7 +84,7 @@ const MessageBubble = ({ message }) => {
           {isUser ? (
             <span style={{ whiteSpace: 'pre-wrap' }}>{message.content}</span>
           ) : (
-            <div className="markdown-body">
+            <div className="markdown-body mindmate-generated-copy">
               <ReactMarkdown>{message.content}</ReactMarkdown>
             </div>
           )}

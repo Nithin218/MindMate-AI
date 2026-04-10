@@ -2,7 +2,7 @@ from MindMateAI.utils.model_loader import ModelLoader
 from langgraph.prebuilt import create_react_agent
 from MindMateAI.logger import logger
 from langchain_core.messages import HumanMessage, SystemMessage
-from MindMateAI.Tools.web_search_tool import tavily_tool
+from MindMateAI.tools.web_search_tool import tavily_tool
 from MindMateAI.Agents.mental_health_state import MentalHealthState
 
 

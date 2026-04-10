@@ -1,11 +1,12 @@
 import React from 'react';
 import ChatInterface from './components/ChatInterface';
 import {
-  Show,
+  useAuth,
   SignInButton,
   SignUpButton,
   UserButton,
 } from "@clerk/react";
+import { clerkAppearance } from './theme.js';
 
 /* ── Auth Landing — exactly matches mindmate_landing_editorial_luxe.html ── */
 function AuthLanding() {
@@ -288,11 +289,29 @@ function AuthLanding() {
 
 /* ── Main App ─────────────────────────────────────────────── */
 function App() {
+  const { isSignedIn, isLoaded } = useAuth();
+
+  // Don't render anything until Clerk has loaded auth state
+  if (!isLoaded) {
+    return (
+      <div style={{
+        minHeight: '100vh', background: '#F5F0E8',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}>
+        <div style={{
+          width: 8, height: 8, borderRadius: '50%',
+          background: '#8B6F4E', opacity: 0.6,
+          animation: 'ringpulse 1.2s ease-in-out infinite',
+        }} />
+      </div>
+    );
+  }
+
   return (
     <div style={{ minHeight: '100vh', background: '#F5F0E8' }}>
 
       {/* Top nav — signed in */}
-      <Show when="signed-in">
+      {isSignedIn && (
         <header style={{
           padding: '0 2rem',
           display: 'flex', justifyContent: 'space-between', alignItems: 'center',
@@ -310,19 +329,18 @@ function App() {
             <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#8B6F4E', display: 'inline-block' }} />
             MindMate
           </div>
-          <UserButton />
+          <UserButton
+            appearance={clerkAppearance}
+            userProfileProps={{ appearance: clerkAppearance }}
+          />
         </header>
-      </Show>
+      )}
 
       {/* Auth landing — signed out */}
-      <Show when="signed-out">
-        <AuthLanding />
-      </Show>
+      {!isSignedIn && <AuthLanding />}
 
       {/* Chat — signed in */}
-      <Show when="signed-in">
-        <ChatInterface />
-      </Show>
+      {isSignedIn && <ChatInterface />}
     </div>
   );
 }
