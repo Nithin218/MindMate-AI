@@ -1,90 +1,87 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { User, Bot } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
 const MessageBubble = ({ message }) => {
-    const isUser = message.role === 'user';
+  const isUser = message.role === 'user';
 
-    return (
-        <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.22, ease: 'easeOut' }}
-            style={{
-                display: 'flex',
-                justifyContent: isUser ? 'flex-end' : 'flex-start',
-                width: '100%',
-                marginBottom: '14px',
-            }}
-        >
-            <div style={{
-                display: 'flex',
-                flexDirection: isUser ? 'row-reverse' : 'row',
-                alignItems: 'flex-start',
-                gap: '10px',
-                maxWidth: '78%',
-            }}>
-                {/* Avatar */}
-                <div style={{
-                    width: '32px',
-                    height: '32px',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0,
-                    background: isUser
-                        ? 'var(--color-surface-2)'
-                        : 'var(--color-accent)',
-                    border: `1px solid ${isUser ? 'var(--color-border)' : 'transparent'}`,
-                    marginTop: '2px',
-                }}>
-                    {isUser
-                        ? <User size={16} color="var(--color-text-muted)" />
-                        : <Bot size={16} color="#fff" />
-                    }
-                </div>
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.2, ease: 'easeOut' }}
+      style={{
+        display: 'flex',
+        justifyContent: isUser ? 'flex-end' : 'flex-start',
+        width: '100%',
+        marginBottom: '12px',
+      }}
+    >
+      <div style={{
+        display: 'flex',
+        flexDirection: isUser ? 'row-reverse' : 'row',
+        alignItems: 'flex-start',
+        gap: '10px',
+        maxWidth: '78%',
+      }}>
+        {/* Avatar */}
+        <div style={{
+          width: 28, height: 28, borderRadius: '50%',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          flexShrink: 0, marginTop: 2,
+          background: isUser
+            ? 'linear-gradient(145deg, #E8D5BC, #D4B896)'
+            : 'rgba(139,111,78,0.12)',
+          border: `0.5px solid rgba(139,111,78,${isUser ? '0.25' : '0.2'})`,
+        }}>
+          {isUser ? (
+            <svg viewBox="0 0 14 14" width="12" height="12" fill="none">
+              <circle cx="7" cy="5" r="2.2" stroke="#7A5C3A" strokeWidth="1.1" />
+              <path d="M2.5 12 C2.5 9.5 4.5 8 7 8 C9.5 8 11.5 9.5 11.5 12" stroke="#7A5C3A" strokeWidth="1.1" strokeLinecap="round" fill="none" />
+            </svg>
+          ) : (
+            <svg viewBox="0 0 48 48" width="14" height="14" fill="none">
+              <circle cx="17" cy="22" r="2.5" fill="#7A5C3A" opacity="0.7" />
+              <circle cx="31" cy="22" r="2.5" fill="#7A5C3A" opacity="0.7" />
+              <path d="M17 31 Q24 37 31 31" stroke="#7A5C3A" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.8" />
+            </svg>
+          )}
+        </div>
 
-                {/* Bubble */}
-                <div style={{
-                    padding: '12px 16px',
-                    borderRadius: isUser ? '16px 4px 16px 16px' : '4px 16px 16px 16px',
-                    background: isUser ? 'var(--color-user-bubble)' : 'var(--color-bot-bubble)',
-                    border: `1px solid ${isUser ? 'var(--color-user-bubble)' : 'var(--color-border)'}`,
-                    boxShadow: isUser ? 'none' : '0 2px 4px rgba(0,0,0,0.02)',
-                    color: 'var(--color-text)',
-                    fontFamily: 'var(--font-body)',
-                    fontSize: '0.9375rem',
-                    fontWeight: 400,
-                    lineHeight: 1.65,
-                    letterSpacing: '0.01em',
-                    whiteSpace: 'pre-wrap',
-                    wordBreak: 'break-word',
-                }}>
-                    {/* Sender label */}
-                    <div style={{
-                        fontFamily: 'var(--font-body)',
-                        fontSize: '0.6875rem',
-                        fontWeight: 600,
-                        letterSpacing: '0.06em',
-                        textTransform: 'uppercase',
-                        color: isUser ? 'var(--color-surface)' : 'var(--color-accent)',
-                        marginBottom: '8px',
-                    }}>
-                        {isUser ? 'You' : 'MindMate'}
-                    </div>
-                    {isUser ? (
-                        message.content
-                    ) : (
-                        <div className="markdown-body">
-                            <ReactMarkdown>{message.content}</ReactMarkdown>
-                        </div>
-                    )}
-                </div>
+        {/* Bubble */}
+        <div style={{
+          padding: '11px 15px',
+          borderRadius: isUser ? '16px 4px 16px 16px' : '4px 16px 16px 16px',
+          background: isUser ? '#EDE5D8' : 'rgba(255, 252, 245, 0.85)',
+          border: `0.5px solid rgba(139,111,78,${isUser ? '0.25' : '0.18'})`,
+          boxShadow: '0 2px 8px rgba(90,60,30,0.06)',
+          color: '#2C2218',
+          fontFamily: "'DM Sans', sans-serif",
+          fontSize: '0.9rem', fontWeight: 300,
+          lineHeight: 1.65, letterSpacing: '0.01em',
+          wordBreak: 'break-word',
+        }}>
+          {/* Sender label */}
+          <div style={{
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: '0.625rem', fontWeight: 500,
+            letterSpacing: '0.1em', textTransform: 'uppercase',
+            color: isUser ? '#B09070' : '#9C7A56',
+            marginBottom: '5px',
+          }}>
+            {isUser ? 'You' : 'MindMate'}
+          </div>
+          {isUser ? (
+            <span style={{ whiteSpace: 'pre-wrap' }}>{message.content}</span>
+          ) : (
+            <div className="markdown-body">
+              <ReactMarkdown>{message.content}</ReactMarkdown>
             </div>
-        </motion.div>
-    );
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
 };
 
 export default MessageBubble;
